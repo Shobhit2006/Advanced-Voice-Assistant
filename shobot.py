@@ -11,7 +11,7 @@ import pywhatkit
 from email.message import EmailMessage
 import pyjokes
 import random
-
+from googletrans import Translator
 
 
 
@@ -167,7 +167,7 @@ if __name__=='__main__':
             speak(f"It is about {plot}")                
         
         elif "voice" in statement:
-            print("for female voice say `female` and, for male voice say `male`")
+            print("for female voice say `female` and, for male voice say `masculine`")
             speak("for female voice say `female` and, for male voice say `masculine`")
             
             q = takeCommand()
@@ -177,6 +177,8 @@ if __name__=='__main__':
             elif ("masculine" in q):
 
                 voice_change(0)
+            else:
+                speak("Voice not changed, invalid input given")
         
  
         elif "weather" in statement or "temperature" in statement:
@@ -228,20 +230,26 @@ if __name__=='__main__':
             }
             response = requests.request("GET", url, headers=headers, params=querystring)
             if response.text=="0" and amt!=0:
+                speak("Invalid currency code entered")
                 print("Invalid currency code entered")
             result=float(response.text)*amt
             speak(f"{amt} {c1} is equal to {result} {c2}")
             print(f"{amt:.2f}" ,c1,"is equal to",f"{result:.2f}",c2)
 
-        elif "message" in statement or "text" in statement:  #Your whatsapp web must be logged in 
+        elif "message" in statement:  #Your whatsapp web must be logged in 
             print("Which number would you like to send the message to(speak the number without the country code)")                 
             speak("Which number would you like to send the message to")
             number=takeCommand()
             speak("What is the content of your message")
-            wmsg=takeCommand()            
-            speak("sending message, kindly be patient")
-            pywhatkit.sendwhatmsg_instantly(f"+91{remove(number)}", wmsg, 15)
-            speak("message sent")
+            wmsg=takeCommand()
+            try:
+                            
+                speak("sending message, kindly be patient")
+                pywhatkit.sendwhatmsg_instantly(f"+91{remove(number)}", wmsg, 15)
+                speak("message sent")
+            except Exception as e:
+                print(e)
+                speak("Invalid number mentioned. Try again with a valid 10 digit number")                
             
 
         elif 'what is the time' in statement or 'tell me the time' in statement or 'what time is it' in statement:
@@ -250,9 +258,10 @@ if __name__=='__main__':
             speak(f"the time is {strTime}")
 
         elif 'who are you' in statement or 'what can you do' in statement:
-            speak('I am Showbawt! your persoanl assistant. I am programmed to perform minor tasks like'
-                  'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies and get top headline news from times of india!')
-
+            print('I am ShoBOT! your persoanl assistant. I am programmed by Shobhit to perform minor tasks like'
+                  'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies, translate texts, give you information about movies, narrate the news and a lot more')
+            speak('I am Showbawt! your persoanl assistant. I am programmed by Shobhit to perform minor tasks like'
+                  'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies, translate texts, give you information about movies, narrate the news and a lot more')
 
         elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
             speak("Shobhit has made me!")
@@ -278,7 +287,7 @@ if __name__=='__main__':
             webbrowser.open_new_tab(statement)
             time.sleep(5)
 
-        elif 'song'  in statement or 'music' in statement or 'play' in statement:
+        elif 'song'  in statement or 'music' in statement:
             
             speak('Which song do you want me to play')
             song = takeCommand()
@@ -289,7 +298,21 @@ if __name__=='__main__':
                 
         
         
-        
+        elif "translate" in statement or "translator" in statement:
+            translator = Translator()
+            print("speak the text that you want to translate")
+            speak("speak the text that you want to translate")
+            text=takeCommand()
+            print("which language do you want to translate it to")
+            speak("which language do you want to translate it to")
+            lang=takeCommand()
+            try:                                         
+                translated_text = translator.translate(text,dest=lang)
+                print(translated_text.text)
+                speak(f"The translated text is: `{translated_text.text}`")
+            except Exception as e:
+                print(e)
+                speak("Unable to translate the text. Try again")
         elif "email" in statement or "mail" in statement:
             try:
                 speak("What is your email subject")
