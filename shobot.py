@@ -14,6 +14,9 @@ import random
 from googletrans import Translator
 
 
+
+
+
 engine=pyttsx3.init()
 voices=engine.getProperty('voices')
 engine.setProperty('voice',voices[1].id)
@@ -264,6 +267,22 @@ if __name__=='__main__':
             speak("Shobhit has made me!")
             print("Shobhit has made me!")
 
+        elif "stock" in statement:
+            print("what is the symbol(code) of the stock")
+            speak("what is the symbol of the stock")
+            symbol=takeCommand()
+            url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={remove(symbol)}&apikey=5YIZ9GTZQDZ475XJ'
+            r = requests.get(url)
+            data = r.json()
+            try:
+                    
+                num=data["Global Quote"]
+                print(f"current stock price of {num['01. symbol']} is {num['05. price']}")
+                speak(f"current stock price of {num['01. symbol']} is {num['05. price']}")
+            except Exception as e:
+                print("Error. Invalid stock name")
+                speak("Error. Invalid stock name")        
+            
         elif 'news' in statement:
             inx=random.randint(0,4)
             inx=random.randint(0,4)
@@ -340,4 +359,4 @@ if __name__=='__main__':
             
             print(x['cnt'])
             speak(x['cnt'])
-	
+
