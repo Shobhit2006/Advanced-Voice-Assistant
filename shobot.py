@@ -14,9 +14,6 @@ import random
 from googletrans import Translator
 
 
-
-
-
 engine=pyttsx3.init()
 voices=engine.getProperty('voices')
 engine.setProperty('voice',voices[1].id)
@@ -141,7 +138,7 @@ if __name__=='__main__':
             reminder_file = open("data.txt", 'w')
             speak("All the reminders have been cleared")
         
-        elif "new reminder" in statement or "create reminder" in statement or "add reminder" in statement:
+        elif "new reminder" in statement or "create reminder" in statement or "add reminder" in statement or "create a reminder" in statement or "add a reminder" in statement:
             
             speak("What is the reminder?")
             data = takeCommand()
@@ -343,4 +340,4 @@ if __name__=='__main__':
             
             print(x['cnt'])
             speak(x['cnt'])
-
+	
