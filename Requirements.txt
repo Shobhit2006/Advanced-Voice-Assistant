@@ -1,0 +1,10 @@
+For this program to run, you will need to install the below packages:
+
+PyAudio
+pyinstaller
+pyttsx3
+SpeechRecognition
+wikipedia
+pyjokes
+EmailMessage
+pywhatkit
