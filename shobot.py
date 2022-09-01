@@ -5,13 +5,14 @@ import wikipedia
 import webbrowser
 import time
 import requests
+
 import os
 import smtplib
-import pywhatkit
 from email.message import EmailMessage
 import pyjokes
 import random
 from googletrans import Translator
+
 
 
 
@@ -31,10 +32,7 @@ def voice_change(v):
     engine.setProperty('voice', voices[x].id)
     speak("voice changed")
 
-def jokes():
-    j = pyjokes.get_joke()
-    print(j)
-    speak(j)
+
 
 def sendEmail(msg):
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -45,20 +43,26 @@ def sendEmail(msg):
     server.close()
 
 def speak(text):
+    print(text)
     engine.say(text)
     engine.runAndWait()
+
+def jokes():
+    j = pyjokes.get_joke()
+    
+    speak(j)
 
 def wishMe():
     hour=datetime.datetime.now().hour
     if hour>=0 and hour<12:
         speak("Good Morning")
-        print("Good Morning")
+        
     elif hour>=12 and hour<18:
         speak("Good Afternoon")
-        print("Good Afternoon")
+        
     else:
         speak("Good Evening")
-        print("Good Evening")
+        
 
 def takeCommand():
     r=sr.Recognizer()
@@ -78,8 +82,17 @@ def takeCommand():
             return "None"
         return statement
 
-print('Hello! I am a Personal Assistant made by Shobhit. My name is Shobot.')
-speak("Hello! I am a Personal Assistant made by Shobhit. My name is Showbawt.")
+try:    
+    response = requests.get("https://www.google.com")
+    
+except:    
+    speak("Internet is not connected. Try again later")
+    exit()
+import pywhatkit
+
+
+speak('Hello! I am a Personal Assistant made by Shobhit. My name is Shobot.')
+
 wishMe()
 
 speak("How can I help you")
@@ -96,7 +109,7 @@ if __name__=='__main__':
         if "bye" in statement or "stop" in statement or "see you soon" in statement:
            
             speak("bye, I hope we meet again")
-            print("Bye, I hope we meet again")
+            
             break
 
         if 'wikipedia' in statement:
@@ -104,7 +117,7 @@ if __name__=='__main__':
             statement =statement.replace("wikipedia", "")
             results = wikipedia.summary(statement, sentences=3)
             speak("According to Wikipedia")
-            print(results)
+            
             speak(results)
 
         elif 'tell a joke' in statement or 'tell me a joke' in statement:
@@ -133,7 +146,7 @@ if __name__=='__main__':
             reminder_file = open("data.txt", 'r')
             if os.stat("data.txt").st_size == 0:
                 speak("You have no reminders")                
-                print('You have no reminders')
+                
             else:                
                 speak("The reminders include: " + reminder_file.read())
 
@@ -158,16 +171,17 @@ if __name__=='__main__':
             complete_url=base_url+name
             response = requests.get(complete_url)
             n=response.json()
-            title=n['title']
-            director=n['director']
-            plot=n['plot']
-            print(f"{title} is directed by {director}")
-            speak(f"{title} is directed by {director}")
-            print(f"It is about {plot}")
-            speak(f"It is about {plot}")                
+            try:                
+                title=n['title']
+                director=n['director']
+                plot=n['plot']                
+                speak(f"{title} is directed by {director}")                
+                speak(f"It is about {plot}")
+            except Exception as e:
+                print(e)
+                speak("unable to get the movie/series details, try again")                
         
-        elif "voice" in statement:
-            print("for female voice say `female` and, for male voice say `masculine`")
+        elif "voice" in statement:           
             speak("for female voice say `female` and, for male voice say `masculine`")
             
             q = takeCommand()
@@ -201,26 +215,17 @@ if __name__=='__main__':
                       "\n humidity in percentage is " +
                       str(current_humidiy) +
                       "\n description  " +
-                      str(weather_description))
-                print(" Temperature in celsius unit = " +
-                      str(int(current_temperature - 273.15)) +
-                      "\n humidity (in percentage) = " +
-                      str(current_humidiy) +
-                      "\n description = " +
-                      str(weather_description))
+                      str(weather_description))               
 
             else:
                 speak(" City Not Found ")
 
-        elif 'currency converter' in statement or "currency exchange" in statement or "currency" in statement:
-            print("What is the currency CODE from which you what to convert: ")
+        elif 'currency converter' in statement or "currency exchange" in statement or "currency" in statement:            
             speak("What is the currency CODE from which you what to convert: ")
-            c1=takeCommand()
-            print("Enter the currency CODE to which you what to convert: ")
-            speak("Enter the currency CODE to which you what to convert: ")
-            c2=takeCommand()
-            print("Enter the amount: ")
-            speak("Enter the amount: ")
+            c1=takeCommand()            
+            speak("What is the currency CODE to which you what to convert: ")
+            c2=takeCommand()            
+            speak("What is the the amount: ")
             amt=float(takeCommand())
             url = "https://currency-exchange.p.rapidapi.com/exchange"
             querystring = {"from": c1,"to": c2}
@@ -230,14 +235,13 @@ if __name__=='__main__':
             }
             response = requests.request("GET", url, headers=headers, params=querystring)
             if response.text=="0" and amt!=0:
-                speak("Invalid currency code entered")
-                print("Invalid currency code entered")
+                speak("Invalid currency code entered")                
             result=float(response.text)*amt
-            speak(f"{amt} {c1} is equal to {result} {c2}")
-            print(f"{amt:.2f}" ,c1,"is equal to",f"{result:.2f}",c2)
+            speak(f"{amt:.2f} {c1} is equal to {result:.2f} {c2}")
+            
 
         elif "message" in statement:  #Your whatsapp web must be logged in 
-            print("Which number would you like to send the message to(speak the number without the country code)")                 
+                        
             speak("Which number would you like to send the message to")
             number=takeCommand()
             speak("What is the content of your message")
@@ -258,17 +262,16 @@ if __name__=='__main__':
             speak(f"the time is {strTime}")
 
         elif 'who are you' in statement or 'what can you do' in statement:
-            print('I am ShoBOT! your persoanl assistant. I am programmed by Shobhit to perform minor tasks like'
-                  'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies, translate texts, give you information about movies, narrate the news and a lot more')
+            
             speak('I am Showbawt! your persoanl assistant. I am programmed by Shobhit to perform minor tasks like'
                   'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies, translate texts, give you information about movies, narrate the news and a lot more')
 
         elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
             speak("Shobhit has made me!")
-            print("Shobhit has made me!")
+            
 
         elif "stock" in statement:
-            print("what is the symbol(code) of the stock")
+            
             speak("what is the symbol of the stock")
             symbol=takeCommand()
             url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={remove(symbol)}&apikey=5YIZ9GTZQDZ475XJ'
@@ -277,10 +280,9 @@ if __name__=='__main__':
             try:
                     
                 num=data["Global Quote"]
-                print(f"current stock price of {num['01. symbol']} is {num['05. price']}")
+                
                 speak(f"current stock price of {num['01. symbol']} is {num['05. price']}")
-            except Exception as e:
-                print("Error. Invalid stock name")
+            except Exception as e:                
                 speak("Error. Invalid stock name")        
             
         elif 'news' in statement:
@@ -288,12 +290,9 @@ if __name__=='__main__':
             inx=random.randint(0,4)
             response = requests.get("https://newsapi.org/v2/top-headlines?sources=reuters&pageSize=5&apiKey=9d51c0ea809f4d3d96c9d9915b17ea5d")
             news=response.json()
-            at=news['articles']
-            print(at[inx]['title'])
-            speak(at[inx]['title'])
-            print(at[inx]['description'])
-            speak(at[inx]['description'])
-            print(at[inx]['content'])
+            at=news['articles']            
+            speak(at[inx]['title'])            
+            speak(at[inx]['description'])            
             speak(at[inx]['content'])
             time.sleep(6)
 
@@ -316,15 +315,15 @@ if __name__=='__main__':
         
         elif "translate" in statement or "translator" in statement:
             translator = Translator()
-            print("speak the text that you want to translate")
+            
             speak("speak the text that you want to translate")
             text=takeCommand()
-            print("which language do you want to translate it to")
+            
             speak("which language do you want to translate it to")
             lang=takeCommand()
             try:                                         
                 translated_text = translator.translate(text,dest=lang)
-                print(translated_text.text)
+                
                 speak(f"The translated text is: `{translated_text.text}`")
             except Exception as e:
                 print(e)
@@ -335,7 +334,7 @@ if __name__=='__main__':
                 subject = takeCommand()
                 speak("What is the message for the email")
                 content = takeCommand()
-                speak("Enter the email address would you like to send it to?")
+                speak("Enter the email address you would  like to send it to?")
                 to=input("Enter your email address: ")
                 msg = EmailMessage()
                 
@@ -355,8 +354,7 @@ if __name__=='__main__':
             base_url="http://api.brainshop.ai/get?bid=162341&key=XEQ17ETA0siJTQkT&uid=[uid]&msg="
             complete_url=base_url+statement
             response = requests.get(complete_url)
-            x=response.json()
-            
-            print(x['cnt'])
+            x=response.json()          
+           
             speak(x['cnt'])
 
