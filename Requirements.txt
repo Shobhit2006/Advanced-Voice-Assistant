@@ -8,3 +8,6 @@ wikipedia
 pyjokes
 EmailMessage
 pywhatkit
+googletrans==3.1.0a0
+
+you can install these packages using `pip install <package_name>`
