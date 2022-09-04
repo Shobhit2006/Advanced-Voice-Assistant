@@ -398,9 +398,9 @@ if __name__=='__main__':
             if email in dr.keys():                
                 replaceAll("email.txt",email,"")
                 replaceAll("email.txt",dr[email],"")
-                speak(f"{email} has been removed from your contracts")
+                speak(f"{email} has been removed from your contacts")
             else:
-                speak("The name doesn't exist in your contracts")
+                speak("This name doesn't exist in your contacts")
 
 
 
