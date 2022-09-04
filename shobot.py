@@ -5,25 +5,26 @@ import wikipedia
 import webbrowser
 import time
 import requests
-
 import os
 import smtplib
 from email.message import EmailMessage
 import pyjokes
 import random
 from googletrans import Translator
-
-
-
-
-
+import ast
+import fileinput
+import sys
 
 engine=pyttsx3.init()
 voices=engine.getProperty('voices')
 engine.setProperty('voice',voices[1].id)
 engine.setProperty('rate', 150)
 
-
+def replaceAll(file,searchExp,replaceExp):
+    for line in fileinput.input(file, inplace=1):
+        if searchExp in line:
+            line = line.replace(searchExp,replaceExp)
+        sys.stdout.write(line)
 def remove(string):
     return string.replace(" ", "")
 
@@ -102,7 +103,7 @@ if __name__=='__main__':
 
     while True:
         
-        statement = takeCommand().lower()
+        statement = takeCommand().lower()        
         if statement==0:
             continue
 
@@ -330,25 +331,78 @@ if __name__=='__main__':
                 speak("Unable to translate the text. Try again")
         elif "email" in statement or "mail" in statement:
             try:
+                speak("To whom shall I send it?")
+                to = takeCommand()
+                file=open('email.txt','r')
+                d=file.read()
+                r=ast.literal_eval(d)                
+                file.close()
+                if to in r.keys():                    
+                     To=r[to]
+                else:
+                    speak("This contact doesn't exist, you can add contacts by saying `create contact`")
+                    break  
                 speak("What is your email subject")
                 subject = takeCommand()
                 speak("What is the message for the email")
                 content = takeCommand()
-                speak("Enter the email address you would  like to send it to?")
-                to=input("Enter your email address: ")
+                                
                 msg = EmailMessage()
-                
+                              
                 msg.set_content(content)
                 msg['Subject'] = subject
                 msg['From'] = "sbaijal55@gmail.com"
-                msg['To'] = to
+                msg['To'] = To
 
                 sendEmail(msg)
                 speak("Email has been sent")
             except Exception as e:
                 print(e)
-                speak(
-                    "Unable to send email check the address of the recipient")
+                speak("Unable to send email")
+        elif "create contact" in statement or "new contact" in statement or "add contact" in statement or "create a contact" in statement or "add a contact" in statement:
+            speak("What name would you like to save it with")
+            cname=takeCommand()
+            speak("Enter the email id of the contact")
+            mail=input("Email: ")
+            try:               
+                
+                file=open('email.txt','r+')
+                d=file.read()
+                r=ast.literal_eval(d)
+                
+                if cname in r.keys():
+                    print("contact with name already exists") 
+                    break                                                
+
+                dict2={cname:mail}
+                r.update(dict2)
+                file.truncate(0)
+                file.close()
+                file=open('email.txt','w')
+                w=file.write(str(r))
+                file.close()
+                speak("contact has been saved")
+            except:
+                file=open('email.txt','w')
+                pp=str({cname:mail})
+                file.write(pp)                
+                file.close()
+                speak("contact has been saved")
+        elif "delete contract" in statement or "remove contract" in statement:
+            file=open('email.txt','r')
+            d=file.read()
+            dr=ast.literal_eval(d)                
+            file.close()
+            speak("Whom do you want to remove")
+            email=takeCommand()
+            if email in dr.keys():                
+                replaceAll("email.txt",email,"")
+                replaceAll("email.txt",dr[email],"")
+                speak(f"{email} has been removed from your contracts")
+            else:
+                speak("The name doesn't exist in your contracts")
+
+
 
         else:
             base_url="http://api.brainshop.ai/get?bid=162341&key=XEQ17ETA0siJTQkT&uid=[uid]&msg="
