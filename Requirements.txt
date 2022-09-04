@@ -5,8 +5,20 @@ pyttsx3
 SpeechRecognition
 wikipedia
 pyjokes
-EmailMessage
 pywhatkit
 googletrans==3.1.0a0
+webbrowser
+time
+requests
+os
+smtplib
+email.message
+random
+ast
+fileinput
+sys
 
 you can install these packages using `pip install <package_name>`
+
+For running the program without installing any packages,<br>
+You can run the file in application(.exe) format from releases
