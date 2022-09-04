@@ -388,7 +388,7 @@ if __name__=='__main__':
                 file.write(pp)                
                 file.close()
                 speak("contact has been saved")
-        elif "delete contract" in statement or "remove contract" in statement:
+        elif "delete contact" in statement or "remove contact" in statement:
             file=open('email.txt','r')
             d=file.read()
             dr=ast.literal_eval(d)                
