@@ -92,7 +92,7 @@ except:
 import pywhatkit
 
 
-speak('Hello! I am a Personal Assistant made by Shobhit. My name is Shobot.')
+speak('Hello! I am ShoBot, your personal voice assistant.')
 
 wishMe()
 
@@ -264,7 +264,7 @@ if __name__=='__main__':
 
         elif 'who are you' in statement or 'what can you do' in statement:
             
-            speak('I am Showbawt! your persoanl assistant. I am programmed by Shobhit to perform minor tasks like'
+            speak('I am ShoBot! your persoanl assistant. I was programmed by Shobhit to perform minor tasks like'
                   'opening youtube, google, and gmail, tell you the weather forecast, I can also send emails, play a song, convert currencies, translate texts, give you information about movies, narrate the news and a lot more')
 
         elif "who made you" in statement or "who created you" in statement or "who discovered you" in statement:
@@ -388,7 +388,7 @@ if __name__=='__main__':
                 file.write(pp)                
                 file.close()
                 speak("contact has been saved")
-        elif "delete contact" in statement or "remove contact" in statement:
+        elif "delete contact" in statement or "remove contact" in statement or "delete a contact" in statement or "remove a contact" in statement:
             file=open('email.txt','r')
             d=file.read()
             dr=ast.literal_eval(d)                
@@ -398,9 +398,9 @@ if __name__=='__main__':
             if email in dr.keys():                
                 replaceAll("email.txt",email,"")
                 replaceAll("email.txt",dr[email],"")
-                speak(f"{email} has been removed from your contacts")
+                speak(f"{email} has been removed from your contracts")
             else:
-                speak("This name doesn't exist in your contacts")
+                speak("The name doesn't exist in your contracts")
 
 
 
