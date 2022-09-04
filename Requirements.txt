@@ -20,5 +20,5 @@ sys
 
 you can install these packages using `pip install <package_name>`
 
-For running the program without installing any packages,<br>
+For running the program without installing any packages,
 You can run the file in application(.exe) format from releases
