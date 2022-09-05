@@ -17,6 +17,7 @@ random
 ast
 fileinput
 sys
+cv2
 
 you can install these packages using `pip install <package_name>`
 
