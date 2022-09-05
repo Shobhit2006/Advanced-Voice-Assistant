@@ -408,14 +408,15 @@ while True:
     elif "camera" in statement or "photo" in statement or "picture" in statement:
         try:
                 
-            cam = cv.VideoCapture(0)   
+            cam = cv.VideoCapture(0)
+            speak("Say Cheeeese")   
             s, img = cam.read()
             if s:
                 cv.namedWindow("ShoBot")
                 cv.imshow("ShoBot",img)
                 speak("Press any key to save the file")
                 cv.waitKey(0)
-                cv.destroyWindow("cam-test")
+                cv.destroyWindow("ShoBot")
                 speak("What is the name you wish to save this file with")
                 imgn=takeCommand()
                 cv.imwrite(f"{imgn}.jpg",img)
@@ -432,4 +433,3 @@ while True:
         x=response.json()          
            
         speak(x['cnt'])
-
