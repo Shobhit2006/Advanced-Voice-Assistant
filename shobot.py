@@ -406,9 +406,9 @@ while True:
 
     elif "camera" in statement or "photo" in statement or "picture" in statement:
         try:
-                
+            speak("Say Cheeeese")    
             cam = cv.VideoCapture(0)
-            speak("Say Cheeeese")   
+               
             s, img = cam.read()
             if s:
                 cv.namedWindow("ShoBot")
