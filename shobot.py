@@ -309,8 +309,7 @@ while True:
         speak('Which song do you want me to play')
         song = takeCommand()
         speak(f"playing {song}")
-        pywhatkit.playonyt(song)
-            #playsound.playsound('Files/Responses/song.wav', True)
+        pywhatkit.playonyt(song)        
         time.sleep(6)
                 
         
